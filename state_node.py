@@ -20,12 +20,10 @@ def swap(space_matrix: List[List[int]], el1_pos: List[int], el2_pos: List[int]) 
     el1_x, el1_y = el1_pos
     el2_x, el2_y = el2_pos
     if (
-            not (
-                    row_len, col_len >= el1_x, el1_y and
-                                               0, 0 <= el1_x, el1_y and
-                                                              row_len, col_len >= el2_x, el2_y and
-                                                                                         0, 0 <= el2_x, el2_y
-            )
+            not (row_len, col_len >= el1_x, el1_y and
+                 0, 0 <= el1_x, el1_y and
+                 row_len, col_len >= el2_x, el2_y and
+                 0, 0 <= el2_x, el2_y)
     ):
         return new_space_matrix
     temp = new_space_matrix[el1_x][el1_y]
@@ -40,10 +38,12 @@ class StateNode:
     __children: Dict[str, Optional["StateNode"]]
     __path_operation: str
     __heuristic_value: int
+    __flag: str  # N - new | D - duplicate/dead end | S - solution
 
     def __init__(self, space_matrix: List[List[int]], parent: Optional["StateNode"] = None, path_operation: str = None):
         self.__space_matrix = space_matrix
         self.__parent = parent
+        self.__flag = "N"
         self.__children = {
             "left": None,
             "right": None,
@@ -63,7 +63,10 @@ class StateNode:
         return hash(space_matrix_tuple)
 
     def __str__(self):
-        string = str(self.__hash__()) + "\n"
+        string = "Hash: " + str(self.__hash__()) + "\n" + \
+                 "Flag: " + self.__flag + "\n" + \
+                 "Path OP: " + self.__path_operation + "\n" + \
+                 "Space matrix: " + "\n"
         for row in self.__space_matrix:
             string += str(row) + "\n"
         return string
@@ -81,8 +84,14 @@ class StateNode:
     def get_path_operation(self) -> str:
         return self.__path_operation
 
+    def get_flag(self) -> str:
+        return self.__flag
+
     def set_heuristic_value(self, h_val: int) -> None:
         self.__heuristic_value = h_val
+
+    def set_flag(self, flag: str) -> None:
+        self.__flag = flag
 
     # ==========> METHODS
     def print_space_matrix(self) -> None:

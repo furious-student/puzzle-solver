@@ -46,8 +46,7 @@ def main():
     state_tree.compute_h2(root.get_children(), space_matrix3)
 
     for child in root.get_children().values():
-        child.print_space_matrix()
-        print("H:", str(child.get_heuristic_value()), "Move", child.get_path_operation())
+        print(child)
         print()
 
 
