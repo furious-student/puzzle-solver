@@ -12,7 +12,7 @@ def find_element(space_matrix: List[List[int]], element: int) -> List[int]:
 
 
 def swap(space_matrix: List[List[int]], el1_pos: List[int], el2_pos: List[int]) -> List[List[int]]:
-    new_space_matrix = copy.deepcopy(space_matrix)
+    new_space_matrix = [[item for item in inner_list] for inner_list in space_matrix]
     if len(el1_pos) != 2 and len(el2_pos) != 2:
         raise ValueError("Argument \"el1_pos\" and \"el2_pos\" must have exactly two integers.")
     row_len = len(new_space_matrix)
@@ -118,7 +118,6 @@ class StateNode:
             child_space_matrix = swap(space_matrix=self.__space_matrix,
                                       el1_pos=empty_slot,
                                       el2_pos=elm_to_move)
-        self.__create_child(child_space_matrix, "right")
         self.__create_child(child_space_matrix, "left")
 
     def create_down_child(self) -> None:
