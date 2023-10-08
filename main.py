@@ -1,6 +1,6 @@
-from state_node import StateNode
-from state_tree import StateTree
 from puzzle_solver import PuzzleSolver
+from tester import run_test, create_test_set
+from json import dumps
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
     space_matrix2 = [
         [5, 1, 0],
         [4, 6, 8],
-        [7, 3, 2]
+        [7, 3, 2],
     ]
 
     space_matrix_15_v1 = [
@@ -23,18 +23,40 @@ def main():
     ]
 
     space_matrix_15_v2 = [
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 15, 14, 0]
+        [0, 2, 3, 4],
+        [1, 6, 7, 8],
+        [5, 9, 10, 11],
+        [13, 14, 15, 12]
     ]
-    # root = StateNode(space_matrix=space_matrix)
-    # root.create_children()
-    state_tree = StateTree(start_state=space_matrix, final_state=space_matrix2)
-    state_tree.build()
-    solution = state_tree.get_solution_path()
-    solution.reverse()
-    print(solution, state_tree.get_root().get_flag())
+
+    json_format = run_test(number_of_tests=7, bidirect=True, mtx_n_size=3, mtx_m_size=3, next_node_select=1)
+    print("Result with next node from children (3x3):")
+    print(dumps(json_format, indent=4))
+
+    # json_format = run_test(number_of_tests=7, bidirect=True, mtx_n_size=3, mtx_m_size=3, next_node_select=2)
+    # print("Result with next best node (3x3):")
+    # print(dumps(json_format, indent=4))
+
+    json_format = run_test(number_of_tests=7, bidirect=False, mtx_n_size=4, mtx_m_size=4, next_node_select=1)
+    print("Result with next node from children (4x4):")
+    print(dumps(json_format, indent=4))
+
+    # json_format = run_test(number_of_tests=7, bidirect=True, mtx_n_size=4, mtx_m_size=4, next_node_select=2)
+    # print("Result with next best node (4x4):")
+    # print(dumps(json_format, indent=4))
+
+    json_format = run_test(number_of_tests=7, bidirect=False, mtx_n_size=5, mtx_m_size=5, next_node_select=1)
+    print("Result with next node from children (3x3):")
+    print(dumps(json_format, indent=4))
+
+    # test_set = create_test_set(3, 3, True)
+    # solver = PuzzleSolver()
+    # solver.set_states(space_matrix, space_matrix2)
+    # result = solver.solve(heuristic_type=1)
+    # print(result[0], "\n", result[1], "\n", result[2])
+    # print()
+    # result = solver.solve(heuristic_type=2)
+    # print(result[0], "\n", result[1], "\n", result[2])
 
 
 if __name__ == '__main__':
