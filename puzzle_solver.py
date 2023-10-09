@@ -50,6 +50,7 @@ class PuzzleSolver:
                     if el > elem:
                         elem_n += 1
                 return elem_n
+
             state_n: int = 0
             for e in lst:
                 state_n += __count_elem_n(e)
@@ -57,8 +58,12 @@ class PuzzleSolver:
 
         flt_initial: List[int] = __flatten(self.__initial_state)
         flt_final: List[int] = __flatten(self.__final_state)
-        initial_n: int = find_element(self.__initial_state, 0)[0] + __count_state_n(flt_initial) + 1
-        final_n: int = find_element(self.__final_state, 0)[0] + __count_state_n(flt_final) + 1
+        initial_n: int = __count_state_n(flt_initial)
+        final_n: int = __count_state_n(flt_final)
+        if len(self.__final_state) == len(self.__initial_state) and len(self.__initial_state) % 2 == 0:
+            print("======")
+            initial_n += find_element(self.__initial_state, 0)[0] + 1
+            final_n += find_element(self.__final_state, 0)[0] + 1
         return initial_n % 2 == final_n % 2
 
     def are_comparable(self) -> bool:

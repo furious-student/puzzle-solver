@@ -88,6 +88,6 @@ def create_test_set(m_size: int = 3, n_size: int = 3, solvable: bool = True) -> 
             shuffle(elements)
             final_matrix = np.array(elements).reshape(m_size, n_size).tolist()
             puzzle_solver.set_states(init_matrix, final_matrix)
-    print("Test set created")
+    print("==========>\nTest set created")
     return {"init_matrix": init_matrix,
             "final_matrix": final_matrix}

@@ -1,3 +1,4 @@
+import sys
 from collections import deque
 from typing import Optional, Dict, List, Set, Deque
 from state_node import StateNode
@@ -7,7 +8,6 @@ from utils import find_element
 class StateTree:
     __root: Optional["StateNode"]
     __final_state: List[List[int]]
-    __existing_nodes: Set["StateNode"]
     __solution_path: List[str]
 
     def __init__(self, root: Optional["StateNode"] = None,
@@ -18,7 +18,6 @@ class StateTree:
         else:
             self.__root = root
         self.__final_state = final_state
-        self.__existing_nodes = set()
         self.__solution_path = []
 
     # ==========> GETTERS AND SETTERS
@@ -33,13 +32,14 @@ class StateTree:
         print("Building tree")
         node_deque: Deque[Optional["StateNode"]] = deque()
         node_deque.append(self.__root)
-        self.__existing_nodes.add(self.__root)
+        existing_nodes = set()
+        existing_nodes.add(self.__root)
 
         while len(node_deque) > 0:
             current_node = node_deque.popleft()
             if current_node.get_space_matrix() == self.__final_state:
                 current_node.set_flag("S")
-                self.__existing_nodes.add(current_node)
+                existing_nodes.add(current_node)
                 return current_node
 
             current_node.create_children()
@@ -53,17 +53,17 @@ class StateTree:
                 print("No heuristic specified")
             if next_node_select == 1:
                 children = sorted(children.items(),
-                                  key=lambda ch: ch[1].get_heuristic_value() if ch[1] is not None else -2,
+                                  key=lambda ch: ch[1].get_heuristic_value() if ch[1] is not None else sys.maxsize,
                                   reverse=True)
                 children = {key: value for key, value in children}
 
             for child in children.values():
                 if child is None:
                     continue
-                if child in self.__existing_nodes:
+                if child in existing_nodes:
                     child.set_flag("D")
                 else:
-                    self.__existing_nodes.add(child)
+                    existing_nodes.add(child)
                     node_deque.appendleft(child)
             if len(node_deque) == 0:
                 break
@@ -88,10 +88,10 @@ class StateTree:
         for child in children.values():
             if child is None:
                 continue
-            h_val = self.compute_h1_for_child(child.get_space_matrix())
+            h_val = self.compute_h1_for_node(child.get_space_matrix())
             child.set_heuristic_value(h_val)
 
-    def compute_h1_for_child(self, current_state: List[List[int]]) -> int:
+    def compute_h1_for_node(self, current_state: List[List[int]]) -> int:
         wrong_placed: int = 0
         for row in range(len(current_state)):
             for col in range(len(current_state[0])):
@@ -104,10 +104,10 @@ class StateTree:
         for child in children.values():
             if child is None:
                 continue
-            h_val = self.compute_h2_for_child(child.get_space_matrix())
+            h_val = self.compute_h2_for_node(child.get_space_matrix())
             child.set_heuristic_value(h_val)
 
-    def compute_h2_for_child(self, current_state: List[List[int]]) -> int:
+    def compute_h2_for_node(self, current_state: List[List[int]]) -> int:
         dist_sum: int = 0
         for row in range(len(current_state)):
             for col in range(len(current_state[0])):
