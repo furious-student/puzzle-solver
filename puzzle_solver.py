@@ -61,10 +61,9 @@ class PuzzleSolver:
         initial_n: int = __count_state_n(flt_initial)
         final_n: int = __count_state_n(flt_final)
         if len(self.__final_state) == len(self.__initial_state) and len(self.__initial_state) % 2 == 0:
-            print("======")
             initial_n += find_element(self.__initial_state, 0)[0] + 1
             final_n += find_element(self.__final_state, 0)[0] + 1
-        return initial_n % 2 == final_n % 2
+        return (initial_n % 2) == (final_n % 2)
 
     def are_comparable(self) -> bool:
         matrix_1 = self.__initial_state

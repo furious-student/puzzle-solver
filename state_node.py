@@ -24,11 +24,14 @@ class StateNode:
         self.__heuristic_value = -1
 
     def __eq__(self, other) -> bool:
+        # Two nodes are equal if their space matrices are equal
         if not isinstance(other, StateNode):
             return False
         return self.__space_matrix == other.get_space_matrix()
 
     def __hash__(self):
+        # This method is needed to be overriden since the __eq__() method was overriden.
+        # Need to cast space_matrix into tuple since the hash() function can take only immutable objects as parameters
         space_matrix_tuple = tuple(tuple(row) for row in self.__space_matrix)
         return hash(space_matrix_tuple)
 
@@ -72,6 +75,8 @@ class StateNode:
             print(row)
 
     def create_right_child(self) -> None:
+        # Finds the element to the left of the empty slot (0), swaps their positions while creating a child of the
+        # current node
         empty_slot = find_element(space_matrix=self.__space_matrix, element=0)
         empty_x, empty_y = empty_slot
         if empty_y > 0:
@@ -82,6 +87,8 @@ class StateNode:
             self.__create_child(child_space_matrix, "right")
 
     def create_left_child(self) -> None:
+        # Finds the element to the right of the empty slot (0), swaps their positions while creating a child of the
+        # current node
         empty_slot = find_element(space_matrix=self.__space_matrix, element=0)
         empty_x, empty_y = empty_slot
         if empty_y < len(self.__space_matrix[0]) - 1:
@@ -92,6 +99,8 @@ class StateNode:
             self.__create_child(child_space_matrix, "left")
 
     def create_down_child(self) -> None:
+        # Finds the element which is above of the empty slot (0), swaps their positions while creating a child of the
+        # current node
         empty_slot = find_element(space_matrix=self.__space_matrix, element=0)
         empty_x, empty_y = empty_slot
         if empty_x > 0:
@@ -102,6 +111,8 @@ class StateNode:
             self.__create_child(child_space_matrix, "down")
 
     def create_up_child(self) -> None:
+        # Finds the element bellow the empty slot (0), swaps their positions while creating a child of the
+        # current node
         empty_slot = find_element(space_matrix=self.__space_matrix, element=0)
         empty_x, empty_y = empty_slot
         if empty_x < len(self.__space_matrix) - 1:

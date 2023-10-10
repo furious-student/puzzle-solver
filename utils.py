@@ -3,6 +3,7 @@ from copy import deepcopy
 
 
 def find_element(space_matrix: List[List[int]], element: int) -> List[int]:
+    # Finds element in the 2D matrix
     location: List[int] = [-1, -1]
     for row_i, row in enumerate(space_matrix):
         for col_i, elm in enumerate(row):
@@ -12,6 +13,7 @@ def find_element(space_matrix: List[List[int]], element: int) -> List[int]:
 
 
 def swap(space_matrix: List[List[int]], el1_pos: List[int], el2_pos: List[int]) -> List[List[int]]:
+    # Swaps elements in the 2D matrix
     new_space_matrix = deepcopy(space_matrix)
     if len(el1_pos) != 2 and len(el2_pos) != 2:
         raise ValueError("Argument \"el1_pos\" and \"el2_pos\" must have exactly two integers.")

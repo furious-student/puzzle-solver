@@ -77,6 +77,7 @@ def run_test(number_of_tests: int = 3, bidirect: bool = False, mtx_m_size: int =
 
 
 def create_test_set(m_size: int = 3, n_size: int = 3, solvable: bool = True) -> Dict[str, List[List[int]]]:
+    # Generates two random matrices of given size. If solvable is set to True, the solvability criterion must be met
     elements = list((range(0, m_size*n_size)))
     shuffle(elements)
     init_matrix = np.array(elements).reshape(m_size, n_size).tolist()

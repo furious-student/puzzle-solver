@@ -29,6 +29,7 @@ class StateTree:
 
     # ==========> METHODS
     def build(self, heuristic_type: int, next_node_select: int = 1) -> Optional["StateNode"]:
+        # Grows the whole tree from the root
         print("Building tree")
         node_deque: Deque[Optional["StateNode"]] = deque()
         node_deque.append(self.__root)
@@ -51,6 +52,7 @@ class StateTree:
                 self.compute_h2(children)
             else:
                 print("No heuristic specified")
+
             if next_node_select == 1:
                 children = sorted(children.items(),
                                   key=lambda ch: ch[1].get_heuristic_value() if ch[1] is not None else sys.maxsize,
@@ -84,7 +86,7 @@ class StateTree:
             current_node = current_node.get_parent()
 
     def compute_h1(self, children: Dict[str, Optional["StateNode"]]) -> None:
-        # Number of pieces not in the right place
+        # Number of pieces out of their final position
         for child in children.values():
             if child is None:
                 continue
@@ -95,12 +97,14 @@ class StateTree:
         wrong_placed: int = 0
         for row in range(len(current_state)):
             for col in range(len(current_state[0])):
+                if current_state[row][col] == 0:
+                    continue
                 if current_state[row][col] != self.__final_state[row][col]:
                     wrong_placed += 1
         return wrong_placed
 
     def compute_h2(self, children: Dict[str, Optional["StateNode"]]) -> None:
-        # Sum of the distances of individual pieces from their final location
+        # Sum of the distances of individual pieces out of their final location
         for child in children.values():
             if child is None:
                 continue
@@ -111,6 +115,8 @@ class StateTree:
         dist_sum: int = 0
         for row in range(len(current_state)):
             for col in range(len(current_state[0])):
+                if current_state[row][col] == 0:
+                    continue
                 final_elm_pos = find_element(self.__final_state, current_state[row][col])
                 dist_sum += abs(row - final_elm_pos[0]) + abs(col - final_elm_pos[1])
         return dist_sum
