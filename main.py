@@ -16,9 +16,9 @@ def main():
     ]
 
     space_matrix_h1 = [
-        [4, 7, 3],
-        [2, 1, 5],
-        [0, 8, 6]
+        [0, 1, 5],
+        [6, 8, 3],
+        [4, 2, 7]
     ]
     space_matrix_h2 = [
         [1, 6, 5],
@@ -66,7 +66,7 @@ def main():
 
     # test_set = create_test_set(3, 3, True)
     solver = PuzzleSolver()
-    solver.set_states(space_matrix2, space_matrix)
+    solver.set_states(space_matrix_h1, space_matrix)
     result = solver.solve(heuristic_type=1, next_node_select=2)
     print("MOVES:\n" + str(result[0]) +
           "\nSOLUTION DEPTH:\n" + str(result[1]) +
